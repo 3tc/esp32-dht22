@@ -52,7 +52,7 @@ def is_in_range(topic, value, std_factor = 10):
 
     result = (value > lo and value < hi)
     if not result:
-        print("%f is out of range [%f - %f], skipping." % (msg.payload, lo, hi))
+        print("%f is out of range [%f - %f], skipping." % (value, lo, hi))
 
     return result
 
