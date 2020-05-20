@@ -57,20 +57,22 @@ def is_in_range(topic, value, std_factor = 10):
     return result
 
 def on_connect(client, userdata, flags, rc):
+    print("Connected %s" % (client))
     client.subscribe(mqtt_topic)
 
 def on_message(client, userdata, msg):
-    if is_in_range(msg.topic, float(msg.payload)):
-        post_body = {"topic": msg.topic, "sensorData": float(msg.payload), "timestamp": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")}
-        result = es.index(index="sensor-1", doc_type="sensor", body=post_body)
+    post_body = {"topic": msg.topic, "sensorData": float(msg.payload), "timestamp": datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")}
+    print("posting %s" % (post_body))
+    result = es.index(index="sensor-1", doc_type="sensor", body=post_body)
+    print("es result: %s" % (result))
 
 es = Elasticsearch([es_host])
 
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
-client.tls_set(ca_certs="/etc/ssl/certs/DST_Root_CA_X3.pem", cert_reqs=ssl.CERT_REQUIRED, tls_version=ssl.PROTOCOL_TLS)
-client.username_pw_set(mqtt_user, mqtt_pass)
+#client.tls_set(ca_certs="/etc/ssl/certs/DST_Root_CA_X3.pem", cert_reqs=ssl.CERT_REQUIRED, tls_version=ssl.PROTOCOL_TLS)
+#client.username_pw_set(mqtt_user, mqtt_pass)
 client.connect(mqtt_host, mqtt_port, 60)
 
 # Blocking call that processes network traffic, dispatches callbacks and

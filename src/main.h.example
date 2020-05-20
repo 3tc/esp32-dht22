@@ -1,0 +1,10 @@
+// copy to main.h and modify the below values to suit
+
+#define MQTT_USER   "username"
+#define MQTT_PASS   "password"
+#define MQTT_HOST   "0.0.0.0"
+#define MQTT_PORT   1883
+#define MQTT_TOPIC  "house/basement"
+
+#define WLAN_SSID   "ssid"
+#define WLAN_PASS   "ssidpassword"
